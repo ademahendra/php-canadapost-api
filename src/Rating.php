@@ -67,11 +67,11 @@ class Rating extends ClientBase
         // They can either be separate variables or the Canada Post options can
         // be within a sub-array keyed by canada_post (or the other way around).
         if (!empty($options['service_codes'])) {
-            $content['services']['service-code'] = $this->parseServiceCodes($options);
+            // $content['services']['service-code'] = $this->parseServiceCodes($options);
         }
 
         if (!empty($options['option_codes'])) {
-            $content['options']['option'] = $this->parseOptionCodes($options);
+            // $content['options']['option'] = $this->parseOptionCodes($options);
         }
 
         if (!empty($this->config['contract_id'])) {
@@ -85,7 +85,7 @@ class Rating extends ClientBase
             'http://www.canadapost.ca/ws/ship/rate-v4'
         );
         $payload = $xml->saveXML();
-
+        
         $response = $this->post(
             "rs/ship/price",
             [

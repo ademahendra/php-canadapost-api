@@ -163,16 +163,23 @@ abstract class ClientBase
 
         try {
             $client = $this->buildClient($options);
+            \Drupal::logger('mijn_naam_ade')->error('1. ----------------');
             $options += [
                 'auth' => [$this->username, $this->password],
                 'headers' => $headers,
                 'body' => $payload,
             ];
-
+            // \Drupal::logger('mijn_naam_ade')->error('2.1 '.$url);
+            // \Drupal::logger('mijn_naam_ade')->error('2.2 '.htmlentities($payload, ENT_COMPAT, 'UTF-8'));
+            // \Drupal::logger('mijn_naam_ade')->error('2.3 '.htmlentities($headers, ENT_COMPAT, 'UTF-8'));
+            // \Drupal::logger('mijn_naam_ade')->error('2.4 '.$this->username);
+            // \Drupal::logger('mijn_naam_ade')->error('2.5 '.$this->password);
+            
             $response = $client->request('POST', $url, $options);
+            // \Drupal::logger('mijn_naam_ade')->error('3. ----------------');
         } catch (GuzzleClientException $exception) {
             $response = $exception->getResponse();
-
+            // \Drupal::logger('mijn_naam_ade')->error(json_encode($this->parseResponse($response)).' <<<---------2----------------');
             throw new ClientException(
                 $exception->getMessage(),
                 $this->parseResponse($response),
