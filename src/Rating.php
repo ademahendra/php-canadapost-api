@@ -20,6 +20,8 @@ class Rating extends ClientBase
      *   The origin postal code.
      * @param string $postalCode
      *   The destination postal code.
+     * @param string $countryCode
+     *   The destination country code.
      * @param float $weight
      *   The weight of the package (kg).
      * @param Dimension $dimensions
@@ -35,6 +37,7 @@ class Rating extends ClientBase
     public function getRates(
         $originPostalCode,
         $postalCode,
+        $countryCode,
         $weight,
         $dimensions = null,
         array $options = []
@@ -49,12 +52,18 @@ class Rating extends ClientBase
                 'weight' => $weight,
             ],
             'origin-postal-code' => $originPostalCode,
-            'destination' => [
-                'domestic' => [
-                    'postal-code' => $postalCode,
-                ],
-            ],
         ];
+        
+        // if canada 
+        if($countryCode == 'CA'){
+	        $content['destination']['domestic']['postal-code'] = $postalCode;
+	    } else if ($countryCode == 'US') {
+		    $content['destination']['united-states']['zip-code'] = $postalCode;
+	    } else {
+		    $content['destination']['international']['country-code'] = $countryCode;
+		    $content['destination']['international']['postal-code'] = $postalCode;
+	    }
+        
         if ($dimensions) {
           $content['parcel-characteristics']['dimensions'] = [
             'length' => $dimensions->getLength(),
